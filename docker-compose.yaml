@@ -6,7 +6,7 @@ services:
     container_name: posdb
     restart: unless-stopped
     ports:
-      - "127.0.0.1:3306:3306"   # host-only, for DB tools on this machine;
+      - "127.0.0.1:3307:3306"   # host-only, for DB tools on this machine
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_DATABASE: miniworld
@@ -21,7 +21,7 @@ services:
       - app_user_password
     healthcheck:
       # The marker comes from 99-ready.sh, so a restart after a failed init (which skips init) never reports healthy
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 && test -f /var/lib/mysql/.siapos-ready"]
+      test: ["CMD-SHELL", "MYSQL_PWD=$$(cat /run/secrets/db_root_password) mysql -uroot -e 'SELECT 1' >/dev/null && test -f /var/lib/mysql/.siapos-ready"]
       interval: 5s
       retries: 20
 

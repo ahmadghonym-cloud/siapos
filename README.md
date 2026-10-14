@@ -6,13 +6,13 @@ a Simple Industry Agnostic Point Of Sale System
 
 ## Setup
 
-1. Create the two database password files. Never commit them: `.gitignore` isn't tracked, so check `git status` before every commit.
+1. Create the two database password files. Never commit them: `/sql/secrets/` is excluded by `.gitignore`. Check `git status` before every commit.
    ```sh
    mkdir -p sql/secrets
    openssl rand -base64 24 > sql/secrets/root_password.txt
    openssl rand -base64 24 > sql/secrets/app_user_password.txt
    ```
-2. Start everything: `docker compose up -d`. MySQL listens on `127.0.0.1:3306` only, and the app on port 3000.
+2. Start everything: `docker compose up -d`. MySQL listens on `127.0.0.1:3307` only, and the app on port 3000. Containers connect to MySQL on its internal port 3306.
 
 The scripts in `sql/init_scripts/` run only when the database volume is empty. After changing them, rebuild the database (this **deletes all its data**):
 
